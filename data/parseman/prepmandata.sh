@@ -9,6 +9,14 @@ if [ $# -lt 1 ] ; then # Test for list of packages to parse
 	exit 22 #Errno 22 is "Invalid Argument"
 fi
 
+# Check imports
+IMPORTS="jq mktemp date"
+for cmd in $IMPORTS; do
+	if ! command -v "$cmd" >/dev/null 2>&1; then
+		echo "Error.  Script \"$0\" requires command \"$cmd\" to operate."
+		exit 3 #Errno 3 is "No such process"
+	fi
+done
 
 SOURCE=$1
 OUTPUTDIR="manuals"
