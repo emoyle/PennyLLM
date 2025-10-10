@@ -7,6 +7,15 @@ if [ $# -lt 1 ] ; then
 	exit 22 # "Errno 22 is "Invalid Argument"
 fi
 
+#Check imports
+IMPORTS="dpkg apt"
+for cmd in $IMPORTS; do
+	if ! command -v "$cmd" >/dev/null 2>&1; then
+		echo "ERROR.  Script \"$0\" requires command \"$cmd\" to operate."
+		exit 3 #Errno 3 is "No such process"
+	fi
+done
+
 for package in "$@" ; do
 	if ! isinstalled $package >/dev/null 2>&1  ; then
 		echo "Package not installed.  Installing..."
@@ -16,4 +25,3 @@ for package in "$@" ; do
 	dpkg -L $package | grep "/usr/share/man" | sed "s/(.*//"
 done
 
-	
